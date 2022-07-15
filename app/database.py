@@ -1,17 +1,17 @@
 import sys
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 def query_db(depth, gradient, conn_str):
     engine = create_engine(conn_str)
 
-    query = f"""
+    query = text("""
     SELECT latitude, longitude, depth, gradient
     FROM wells
-    WHERE depth > {depth} AND gradient > {gradient};
-    """
+    WHERE depth > :foobar AND gradient > :gradient;
+    """)
 
     with engine.connect() as conn:
-        results = conn.execute(query).fetchall()
+        results = conn.execute(query, foobar=depth, gradient=gradient).fetchall()
 
     return results
 
