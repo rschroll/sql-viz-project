@@ -1,8 +1,11 @@
+import os
 import sys
 from sqlalchemy import create_engine, text
 
-def query_db(depth, gradient, conn_str):
-    engine = create_engine(conn_str)
+URL_DB = os.getenv('URL_DB')
+
+def query_db(depth, gradient):
+    engine = create_engine(URL_DB)
 
     query = text("""
     SELECT latitude, longitude, depth, gradient
@@ -18,5 +21,4 @@ def query_db(depth, gradient, conn_str):
 if __name__ == '__main__':
     depth = sys.argv[1]
     gradient = sys.argv[2]
-    conn_str = sys.argv[3]
-    print(query_db(depth, gradient, conn_str))
+    print(query_db(depth, gradient))
